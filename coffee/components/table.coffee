@@ -2,10 +2,8 @@
 React = require 'react'
 $ = React.DOM
 
-Table = require './table'
-
 module.exports = React.createClass
-  displayName: 'app-component'
+  displayName: 'Table'
 
   render: ->
-    @transferPropsTo Table()
+    $.div {}, 'the table'

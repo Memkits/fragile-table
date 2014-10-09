@@ -1,6 +1,11 @@
 
 React = require 'react'
 
-AppComponent = require './components/app'
+store = require './store'
+App = require './components/app'
 
-React.renderComponent AppComponent({}), document.body
+store.emit = ->
+  app = App data: store.get()
+  React.renderComponent app, document.body
+
+store.emit()
