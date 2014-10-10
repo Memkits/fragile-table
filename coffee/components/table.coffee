@@ -11,11 +11,24 @@ Point = require './point'
 module.exports = React.createClass
   displayName: 'Table'
 
+  getInitialState: ->
+    dragging: {}
+
   addX: ->
     store.addX()
 
   addY: ->
     store.addY()
+
+  setDragging: (data) ->
+    @setState dragging: data
+
+  removeAxis: ->
+    if @state.dragging.type is 'x'
+      store.rmX @state.dragging.id
+    if @state.dragging.type is 'y'
+      store.rmY @state.dragging.id
+    @setState dragging: {}
 
   render: ->
     {xs, ys, points} = @props.data
@@ -24,9 +37,15 @@ module.exports = React.createClass
     yOrder = ys.map (item) => item.id
 
     xElements = xs.map (item, index) =>
-      XAxis data: item, key: item.id, index: index
+      XAxis
+        data: item, key: item.id, index: index
+        setDragging: @setDragging
+        dragging: @state.dragging
     yElements = ys.map (item, index) =>
-      YAxis data: item, key: item.id, index: index
+      YAxis
+        data: item, key: item.id, index: index
+        dragging: @state.dragging
+        setDragging: @setDragging
 
     points = xOrder.map (x, px) =>
       yOrder.map (y, py) =>
@@ -36,8 +55,8 @@ module.exports = React.createClass
     $.div
       className: 'table'
       style:
-        width: "#{(xOrder.length + 1) * 100}px"
-        height: "#{(yOrder.length + 1) * 50}px"
+        width: "#{(xOrder.length + 2) * 200}px"
+        height: "#{(yOrder.length + 2) * 50}px"
       $.div className: 'cell handler',
         $.div className: 'circle'
       xElements
@@ -47,13 +66,15 @@ module.exports = React.createClass
         onClick: @addX
         style:
           top: '0'
-          left: "#{(xElements.length + 1) * 100}px"
-        '+'
+          left: "#{(xElements.length + 1) * 200}px"
+        onDragEnter: @removeAxis
+        if @state.dragging.id? then '×' else '+'
       $.div
         className: 'add cell'
         onClick: @addY
         style:
           left: '0'
           top: "#{(yElements.length + 1) * 50}px"
-        '+'
+        onDragEnter: @removeAxis
+        if @state.dragging.id? then '×' else '+'
       points

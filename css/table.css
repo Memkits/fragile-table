@@ -2,6 +2,13 @@
 .table {
     position: relative;
     -webkit-user-select: none;
+    background: rgb(249, 249, 249);
+}
+
+.table .handler {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .table input {
@@ -10,10 +17,12 @@
 }
 
 .table .cell {
-    width: 100px;
+    width: 200px;
     height: 50px;
     text-align: center;
     position: absolute;
+    line-height: 50px;
+    outline: none;
 }
 
 .table .circle {
@@ -24,12 +33,18 @@
     display: inline-block;
 }
 
+.table .axis {}
+
 .table .x {
 }
 
-.table .y {}
+.table .y {
+}
 
-.table .point {}
+.table .point {
+    white-space: nowrap;
+    overflow: scroll;
+}
 
 .table .add {
     font-size: 20px;

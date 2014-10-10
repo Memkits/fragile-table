@@ -74,7 +74,7 @@ module.exports =
         break
 
   rmY: (id) ->
-    target = storage.xs
+    target = storage.ys
     for item, index in target
       if item.id is id
         target.splice index, 1
@@ -86,13 +86,15 @@ module.exports =
     for item, index in target
       if item.id is a then pa = index
       if item.id is b then pb = index
-    [target[a], target[b]] = [target[b], target[a]]
-    @emit()
+    if pa? and pb?
+      [target[pa], target[pb]] = [target[pb], target[pa]]
+      @emit()
 
-  mvY: ->
+  mvY: (a, b) ->
     target = storage.ys
     for item, index in target
       if item.id is a then pa = index
       if item.id is b then pb = index
-    [target[a], target[b]] = [target[b], target[a]]
-    @emit()
+    if pa? and pb?
+      [target[pa], target[pb]] = [target[pb], target[pa]]
+      @emit()

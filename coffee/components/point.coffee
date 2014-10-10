@@ -11,15 +11,15 @@ module.exports = React.createClass
     store.editPoint
       x: @props.data.x
       y: @props.data.y
-      text: event.target.value
+      text: event.target.innerText
 
   render: ->
-    $.input
+    $.div
+      contentEditable: yes
       className: 'point cell'
       key: "#{@props.data.x}-#{@props.data.y}"
       style:
-        left: "#{(@props.x + 1) * 100}px"
+        left: "#{(@props.x + 1) * 200}px"
         top: "#{(@props.y + 1) * 50}px"
-      value: @props.data.text
-      onChange: @update
-      placeholder: 'point'
+      onKeyUp: @update
+      @props.data.text
