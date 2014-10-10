@@ -8,6 +8,12 @@ XAxis = require './x-axis'
 YAxis = require './y-axis'
 Point = require './point'
 
+idOrder = (a, b) ->
+  switch
+    when a.id < b.id then -1
+    when a.id > b.id then 1
+    else 0
+
 module.exports = React.createClass
   displayName: 'Table'
 
@@ -36,29 +42,44 @@ module.exports = React.createClass
     xOrder = xs.map (item) => item.id
     yOrder = ys.map (item) => item.id
 
-    xElements = xs.map (item, index) =>
-      XAxis
+    xElements = xs
+    .map (item, index) =>
+      id: item.id
+      component: XAxis
         data: item, key: item.id, index: index
         setDragging: @setDragging
         dragging: @state.dragging
-    yElements = ys.map (item, index) =>
-      YAxis
-        data: item, key: item.id, index: index
-        dragging: @state.dragging
-        setDragging: @setDragging
+    .sort idOrder
+    .map (item) => item.component
 
-    points = xOrder.map (x, px) =>
+    yElements = ys
+    .map (item, index) =>
+      id: item.id
+      component: YAxis
+        data: item, key: item.id, index: index
+        dragging: @state.dragging
+        setDragging: @setDragging
+    .sort idOrder
+    .map (item) => item.component
+
+    points = []
+    xOrder.map (x, px) =>
       yOrder.map (y, py) =>
         data = store.getPoint x, y
-        Point data: data, key: "#{x}-#{y}", x: px, y: py
+        points.push
+          id: "#{x}-#{y}"
+          component: Point data: data, key: "#{x}-#{y}", x: px, y: py
+
+    points = points
+    .sort idOrder
+    .map (item) => item.component
 
     $.div
       className: 'table'
       style:
         width: "#{(xOrder.length + 2) * 200}px"
         height: "#{(yOrder.length + 2) * 50}px"
-      $.div className: 'cell handler',
-        $.div className: 'circle'
+      $.div className: 'cell handler', 'Fragile Table'
       xElements
       yElements
       $.div

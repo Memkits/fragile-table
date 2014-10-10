@@ -115,7 +115,7 @@ gulp.task 'cssmin', ->
   cssmin = require 'gulp-cssmin'
   gulp
   .src 'build/css/main.css'
-  .pipe cssmin()
+  .pipe cssmin(root: 'build/css')
   .pipe rename(suffix: '.min')
   .pipe gulp.dest('dist/')
 

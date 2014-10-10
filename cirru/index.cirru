@@ -5,6 +5,7 @@ html
     title "Fragile Table"
     meta (:charset utf-8)
     script(:src dist/vendor.min.js)
+    link (:rel icon) (:href png/table.png)
     @if (@ dev)
       @block
         link (:rel stylesheet) (:href css/main.css)

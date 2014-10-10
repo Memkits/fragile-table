@@ -2,7 +2,9 @@
 Fragile Table
 ------
 
-Small table to put data into.
+Demo: http://repo.tiye.me/fragile-table/
+
+A small table for putting data in orders.
 
 ### License
 

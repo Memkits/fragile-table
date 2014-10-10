@@ -70,16 +70,20 @@ module.exports =
     for item, index in target
       if item.id is id
         target.splice index, 1
-        @emit()
         break
+    storage.points = storage.points.filter (item) =>
+      item.x isnt id
+    @emit()
 
   rmY: (id) ->
     target = storage.ys
     for item, index in target
       if item.id is id
         target.splice index, 1
-        @emit()
         break
+    storage.points = storage.points.filter (item) =>
+      item.y isnt id
+    @emit()
 
   mvX: (a, b) ->
     target = storage.xs
