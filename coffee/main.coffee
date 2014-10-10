@@ -2,10 +2,11 @@
 React = require 'react'
 
 store = require './store'
-App = require './components/app'
+
+Table = require './components/table'
 
 store.emit = ->
-  app = App data: store.get()
+  app = Table data: store.get()
   React.renderComponent app, document.body
 
 store.emit()

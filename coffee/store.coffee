@@ -1,5 +1,5 @@
 
-rawData = localStorage.getItem('fragile-table') or '{}'
+rawData = localStorage.getItem('fragile-table')
 if rawData?
   storage = JSON.parse rawData
 else
@@ -40,7 +40,15 @@ module.exports =
         item.text = data
         break
 
-  editPoints: (data) ->
+  getPoint: (x, y) ->
+    items = storage.points.filter (item) =>
+      (item.x is data.x) and (item.y is data.y)
+    if items[0]?
+      items[0]
+    else
+      {x, y, text: ' '}
+
+  editPoint: (data) ->
     items = storage.points.filter (item) =>
       (item.x is data.x) and (item.y is data.y)
     if items[0]?
@@ -64,22 +72,14 @@ module.exports =
 
   mvX: (a, b) ->
     target = storage.xs
-    pa = 0
-    pb = 0
     for item, index in target
       if item.id is a then pa = index
       if item.id is b then pb = index
-    tmp = target[pa]
-    target[pa] = target[pb]
-    target[pb] = tmp
+    [target[a], target[b]] = [target[b], target[a]]
 
   mvY: ->
     target = storage.ys
-    pa = 0
-    pb = 0
     for item, index in target
       if item.id is a then pa = index
       if item.id is b then pb = index
-    tmp = target[pa]
-    target[pa] = target[pb]
-    target[pb] = tmp
+    [target[a], target[b]] = [target[b], target[a]]
