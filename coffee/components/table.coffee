@@ -2,8 +2,20 @@
 React = require 'react'
 $ = React.DOM
 
+store = require '../store'
+
+XAxis = require './x-axis'
+YAxis = require './y-axis'
+Point = require './point'
+
 module.exports = React.createClass
   displayName: 'Table'
+
+  addX: ->
+    store.addX()
+
+  addY: ->
+    store.addY()
 
   render: ->
     {xs, ys, points} = @props.data
@@ -12,30 +24,34 @@ module.exports = React.createClass
     yOrder = ys.map (item) => item.id
 
     xElements = xs.map (item, index) =>
-      style = top: '0', left: "#{index * 100}px"
-      $.div className: 'x cell', key: item.id, style: style, item.text
-    yElements = ys.map (item) =>
-      style = left: '0', top: "#{index * 50}px"
-      $.div className: 'y cell', key: item.id, style: style, item.text
-    points = points.map (item) =>
-      px = xOrder.indexOf item.x
-      py = yOrder.indexOf item.y
-      style = left: "#{px * 100}px", top: "#{py * 50}px"
-      $.div className: 'point cell', key: "#{item.x}-#{item.y}", style: style, item.text
+      XAxis data: item, key: item.id, index: index
+    yElements = ys.map (item, index) =>
+      YAxis data: item, key: item.id, index: index
 
-    $.div className: 'table',
+    points = xOrder.map (x, px) =>
+      yOrder.map (y, py) =>
+        data = store.getPoint x, y
+        Point data: data, key: "#{x}-#{y}", x: px, y: py
+
+    $.div
+      className: 'table'
+      style:
+        width: "#{(xOrder.length + 1) * 100}px"
+        height: "#{(yOrder.length + 1) * 50}px"
       $.div className: 'cell handler',
         $.div className: 'circle'
       xElements
       yElements
       $.div
         className: 'add cell'
+        onClick: @addX
         style:
           top: '0'
           left: "#{(xElements.length + 1) * 100}px"
         '+'
       $.div
         className: 'add cell'
+        onClick: @addY
         style:
           left: '0'
           top: "#{(yElements.length + 1) * 50}px"
