@@ -88,7 +88,8 @@ module.exports = React.createClass
         style:
           top: '0'
           left: "#{(xElements.length + 1) * 200}px"
-        onDragEnter: @removeAxis
+        onDrop: @removeAxis
+        onDragOver: (event) -> event.preventDefault()
         if @state.dragging.id? then '×' else '+'
       $.div
         className: 'add cell'
@@ -96,6 +97,7 @@ module.exports = React.createClass
         style:
           left: '0'
           top: "#{(yElements.length + 1) * 50}px"
-        onDragEnter: @removeAxis
+        onDrop: @removeAxis
+        onDragOver: (event) -> event.preventDefault()
         if @state.dragging.id? then '×' else '+'
       points
